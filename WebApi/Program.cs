@@ -1,12 +1,11 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using System;
 using WebApi.BaseServices;
-using WebApi.ConfigurationServices.IdentityConfigurationServices;
 using WebApi.Data;
+using WebApi.Data.MapperService;
 using WebApi.EntitiesServices;
-using WebApi.Extension_Methods;
+using WebApi.ExtensionMethods;
 using WebApi.IdentityUserServices;
 using WebApi.Models;
 
@@ -23,8 +22,11 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IAccountService,AccountService>();
 builder.Services.AddScoped<IUserService,UserService>();
+
+builder.Services.AddAutoMapper(typeof(MapperEntities));
 
 builder.Services.AddAccountServices(builder);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

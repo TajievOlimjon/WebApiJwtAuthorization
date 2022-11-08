@@ -17,9 +17,10 @@ namespace WebApi.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("ProductVersion", "6.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "uuid-ossp");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -46,64 +47,6 @@ namespace WebApi.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "fa1774c4-5abd-48e9-a18c-0ffa7a83a765",
-                            ConcurrencyStamp = "31e8948e-b966-4d4a-911c-377975f3de23",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = "c78fb03b-d522-49f9-b80e-45dda9a8fefe",
-                            ConcurrencyStamp = "9c161432-2ee7-4e2f-83e0-d3e306d6ad8d",
-                            Name = "Manager",
-                            NormalizedName = "MANAGER"
-                        },
-                        new
-                        {
-                            Id = "7f2ac4c5-734f-4490-84a8-9971c21a9132",
-                            ConcurrencyStamp = "f1707968-0ada-488b-a448-f1e0bfebc3b7",
-                            Name = "Owner",
-                            NormalizedName = "OWNER"
-                        },
-                        new
-                        {
-                            Id = "5582d545-f8ac-48c2-8c69-927a1124961b",
-                            ConcurrencyStamp = "860fb0d8-567a-43c8-b9b8-7a634c3c53c6",
-                            Name = "Editor",
-                            NormalizedName = "EDITOR"
-                        },
-                        new
-                        {
-                            Id = "e336c35c-f87c-4f77-a7e0-f4117851e295",
-                            ConcurrencyStamp = "85363095-ece7-4bcf-88bd-0c18ef41a18f",
-                            Name = "Buyer",
-                            NormalizedName = "BUYER"
-                        },
-                        new
-                        {
-                            Id = "08e7e341-61bb-41ec-a419-e2fd8d42c380",
-                            ConcurrencyStamp = "48973703-e57a-4e8b-afc0-f68bceb95981",
-                            Name = "Business",
-                            NormalizedName = "BUSINESS"
-                        },
-                        new
-                        {
-                            Id = "773e723b-225f-413d-b534-6b159f718875",
-                            ConcurrencyStamp = "a37462ee-ac2f-48a8-8f5d-57df85a73630",
-                            Name = "Seller",
-                            NormalizedName = "SELLER"
-                        },
-                        new
-                        {
-                            Id = "8de6be3a-dc7a-497a-ae23-4c8acb39adb4",
-                            ConcurrencyStamp = "a9a89905-102c-4dd8-aa42-f27cc1e19372",
-                            Name = "Subscriber",
-                            NormalizedName = "SUBSCRIBER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -191,48 +134,6 @@ namespace WebApi.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "591963f3-4778-49c2-a565-32ebe9e4bbe7",
-                            RoleId = "fa1774c4-5abd-48e9-a18c-0ffa7a83a765"
-                        },
-                        new
-                        {
-                            UserId = "07a97ae7-a329-4534-9795-455aaeda7b74",
-                            RoleId = "c78fb03b-d522-49f9-b80e-45dda9a8fefe"
-                        },
-                        new
-                        {
-                            UserId = "3add81f0-3a56-45ff-adbe-7930786080ef",
-                            RoleId = "7f2ac4c5-734f-4490-84a8-9971c21a9132"
-                        },
-                        new
-                        {
-                            UserId = "cc7e0bf4-b58a-4352-93c9-aca3efbcbd32",
-                            RoleId = "5582d545-f8ac-48c2-8c69-927a1124961b"
-                        },
-                        new
-                        {
-                            UserId = "c2478fca-a65d-4e83-b377-7f5a06a89f19",
-                            RoleId = "e336c35c-f87c-4f77-a7e0-f4117851e295"
-                        },
-                        new
-                        {
-                            UserId = "e5776d2b-d5c6-4afd-968c-280d74a797c0",
-                            RoleId = "08e7e341-61bb-41ec-a419-e2fd8d42c380"
-                        },
-                        new
-                        {
-                            UserId = "4502a71c-0341-4d70-a84d-3ba2eee49287",
-                            RoleId = "773e723b-225f-413d-b534-6b159f718875"
-                        },
-                        new
-                        {
-                            UserId = "849e3092-76eb-4ad3-a41c-1a6236543ba2",
-                            RoleId = "8de6be3a-dc7a-497a-ae23-4c8acb39adb4"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -254,6 +155,51 @@ namespace WebApi.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("WebApi.Entities.Author", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("Id")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("BirthDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("CreateDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("UpdateDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Authors");
+                });
+
             modelBuilder.Entity("WebApi.Entities.Book", b =>
                 {
                     b.Property<Guid>("Id")
@@ -262,18 +208,78 @@ namespace WebApi.Migrations
                         .HasColumnName("Id")
                         .HasDefaultValueSql("gen_random_uuid()");
 
+                    b.Property<string>("AddressPublisher")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreateDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Descrption")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(55)
-                        .HasColumnType("character varying(55)");
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("PublishedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("QuantityPublishedBook")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("UpdateDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
+                });
+
+            modelBuilder.Entity("WebApi.Entities.BookAuthor", b =>
+                {
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("BookId", "AuthorId");
+
+                    b.ToTable("BookAuthors");
+                });
+
+            modelBuilder.Entity("WebApi.Entities.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Course");
+                });
+
+            modelBuilder.Entity("WebApi.Entities.CourseStudent", b =>
+                {
+                    b.Property<int>("CourseId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("CourseId", "StudentId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("CourseStudent");
                 });
 
             modelBuilder.Entity("WebApi.Entities.Student", b =>
@@ -286,6 +292,9 @@ namespace WebApi.Migrations
 
                     b.Property<int>("Age")
                         .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("CreateDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -305,6 +314,9 @@ namespace WebApi.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("UpdateDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -385,160 +397,6 @@ namespace WebApi.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "591963f3-4778-49c2-a565-32ebe9e4bbe7",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "63438768-dfb1-4e50-88d7-215de2b4659f",
-                            Email = "Aziz@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Azizbek",
-                            LastName = "Azizov",
-                            LockoutEnabled = false,
-                            MiddleName = "Azizovich",
-                            NormalizedUserName = "AZIZBEK",
-                            PasswordHash = "$2a$11$iQk4Y8wUlDQrVnZ1CaQ5ge1kbbnPyvEP3yBA74p7S7.dRncKpB3Xe",
-                            PhoneNumber = "+992988058314",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "6b7a7804-3baa-4a37-97b9-bb2aadc660e1",
-                            TwoFactorEnabled = false,
-                            UserName = "Azizbek"
-                        },
-                        new
-                        {
-                            Id = "07a97ae7-a329-4534-9795-455aaeda7b74",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "6084c81a-53fa-492b-9bfb-20fb694cb9d9",
-                            Email = "tajiev0711@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Olimjon",
-                            LastName = "Tajiev",
-                            LockoutEnabled = false,
-                            MiddleName = "Turamurodovich",
-                            NormalizedUserName = "TAJIEVOLIMJON",
-                            PasswordHash = "$2a$11$xAv19CuueSXGJURHLu6msuLcmDt/SoLtIFqMIkrb5mLzRKdcg1J96",
-                            PhoneNumber = "+992911288822",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "a8d3acfa-46be-4d19-9d67-bc5b903bc3de",
-                            TwoFactorEnabled = false,
-                            UserName = "TajievOlimjon"
-                        },
-                        new
-                        {
-                            Id = "3add81f0-3a56-45ff-adbe-7930786080ef",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "0b719655-c441-43c6-a89b-86188e41dec8",
-                            Email = "azam@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Azamjon",
-                            LastName = "Azamov",
-                            LockoutEnabled = false,
-                            MiddleName = "Azamovich",
-                            NormalizedUserName = "AZAMJON",
-                            PasswordHash = "$2a$11$CQDryHBK9ukHegZboeQ/s.ggfh93Ut1Mie70EG8cG3sGjp7ft0gra",
-                            PhoneNumber = "+992988058310",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "07b3c64a-1173-49f2-a549-727057c80239",
-                            TwoFactorEnabled = false,
-                            UserName = "Azamjon"
-                        },
-                        new
-                        {
-                            Id = "cc7e0bf4-b58a-4352-93c9-aca3efbcbd32",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "6bdad6eb-8d22-45c2-ad2f-17b9f6b679db",
-                            Email = "akram@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Akram",
-                            LastName = "Albekov",
-                            LockoutEnabled = false,
-                            MiddleName = "Salimjonivich",
-                            NormalizedUserName = "AKRAM ",
-                            PasswordHash = "$2a$11$KllBVTaKnZWTFv2CdWK3tOn1xEx4hILR/TuljkIasEZOmvSHA2tge",
-                            PhoneNumber = "+992988058312",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "72b2fecc-9308-42a3-af52-f2f18c5e3701",
-                            TwoFactorEnabled = false,
-                            UserName = "Akram"
-                        },
-                        new
-                        {
-                            Id = "c2478fca-a65d-4e83-b377-7f5a06a89f19",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "05818863-b08f-42af-abc4-49cd12535012",
-                            Email = "muhriddin@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Muhriddin",
-                            LastName = "Kalkanov",
-                            LockoutEnabled = false,
-                            MiddleName = "Olimjonovich",
-                            NormalizedUserName = "MUHRIDDIN",
-                            PasswordHash = "$2a$11$2ZT2ysMnY9LjXZLNK6VcL.Ah5YJvq5McC9m16Z.chn500ovvwm4Fe",
-                            PhoneNumber = "+992988058313",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "16e04046-af32-467a-a925-e9a524342bc3",
-                            TwoFactorEnabled = false,
-                            UserName = "Muhriddin"
-                        },
-                        new
-                        {
-                            Id = "e5776d2b-d5c6-4afd-968c-280d74a797c0",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "e19bcb3a-6b14-4eca-9914-0021244964be",
-                            Email = "Akmal@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Akmal",
-                            LastName = "Agamberdiev",
-                            LockoutEnabled = false,
-                            MiddleName = "Akmalovich",
-                            NormalizedUserName = "AKMAL",
-                            PasswordHash = "$2a$11$gFMR0YYKJEfjFxk9BRBRKuHY/P7d9jprUq1JWPAmmjKVXRKG1PASC",
-                            PhoneNumber = "+992988058315",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "732031fa-f9a9-4328-9103-5c8f3f929db2",
-                            TwoFactorEnabled = false,
-                            UserName = "Akmal"
-                        },
-                        new
-                        {
-                            Id = "4502a71c-0341-4d70-a84d-3ba2eee49287",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "96136d23-793e-4951-9848-6be32951528c",
-                            Email = "donior@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Donior",
-                            LastName = "Tajiev",
-                            LockoutEnabled = false,
-                            MiddleName = "Ashpulatovich",
-                            NormalizedUserName = "DONIOR",
-                            PasswordHash = "$2a$11$EJEjybEXphECa6fCirWGQe4QpYSjF1RLBXelSO0XY4p/XU/Z79bUa",
-                            PhoneNumber = "+992988058317",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "4240e8bf-fbc2-44b8-aeec-0535026abaf7",
-                            TwoFactorEnabled = false,
-                            UserName = "Donior"
-                        },
-                        new
-                        {
-                            Id = "849e3092-76eb-4ad3-a41c-1a6236543ba2",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "ab8e6648-fceb-46fe-a96a-f0e3c355c0b6",
-                            Email = "akbar@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Akbar",
-                            LastName = "Alimirzoev",
-                            LockoutEnabled = false,
-                            MiddleName = "Alievich",
-                            NormalizedUserName = "AKBAR",
-                            PasswordHash = "$2a$11$npZ3hjY/WUZ9mOukrnU4He6cLxScxH2ifT32Souq0T9N5ZWNgDgqu",
-                            PhoneNumber = "+992988058318",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "a51e0052-a892-45de-bea0-34b6c6332fed",
-                            TwoFactorEnabled = false,
-                            UserName = "Akbar"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -590,6 +448,64 @@ namespace WebApi.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebApi.Entities.BookAuthor", b =>
+                {
+                    b.HasOne("WebApi.Entities.Author", "Author")
+                        .WithMany("Books")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApi.Entities.Book", "Book")
+                        .WithMany("Authors")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("WebApi.Entities.CourseStudent", b =>
+                {
+                    b.HasOne("WebApi.Entities.Course", "Course")
+                        .WithMany("Students")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApi.Entities.Student", "Student")
+                        .WithMany("Courses")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("WebApi.Entities.Author", b =>
+                {
+                    b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("WebApi.Entities.Book", b =>
+                {
+                    b.Navigation("Authors");
+                });
+
+            modelBuilder.Entity("WebApi.Entities.Course", b =>
+                {
+                    b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("WebApi.Entities.Student", b =>
+                {
+                    b.Navigation("Courses");
                 });
 #pragma warning restore 612, 618
         }

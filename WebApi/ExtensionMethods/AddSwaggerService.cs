@@ -1,6 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace WebApi.Extension_Methods
+namespace WebApi.ExtensionMethods
 {
     public static class AddSwaggerService
     {

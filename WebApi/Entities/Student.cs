@@ -10,24 +10,10 @@ namespace WebApi.Entities
         public string LastName { get; set; }
         public int Age { get; set; }
         public string PhoneNumber { get; set; }
-        private string email;
-
+        public string Email { get; set; }
         public Gender Gender { get; set; }
-
-        public string Email
-        {
-            get
-            {
-                return email;
-            }
-            set
-            {
-                this.email=Email;
-            }
-            
-        }
-
-      
-
+        public DateTimeOffset CreateDate { get; set; }= DateTimeOffset.Now;
+        public DateTimeOffset UpdateDate { get; set; }
+        public virtual List<CourseStudent> Courses { get; set; }
     }
 }

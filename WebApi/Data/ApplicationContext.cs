@@ -1,29 +1,45 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WebApi.ConfigurationServices.ConfigurationModels;
 using WebApi.Entities;
 using WebApi.Models;
 
 namespace WebApi.Data
 {
     public class ApplicationContext : IdentityDbContext<User>
-    {
-        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { /* base class*/ }
+    { 
+        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
+        {
+           
+        }
 
+       
+
+       
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-                   builder.Entity<Book>().Property(x => x.Id)
-                   .HasColumnName("Id")
-                   .HasColumnType("uuid")
-                   .HasDefaultValueSql("gen_random_uuid()")
-                   .IsRequired();
+            builder.HasPostgresExtension("uuid-ossp");
 
-               SeedRoles(builder);
-               SeedUsers(builder);
-               SeedUserRoles(builder);
+            builder.Entity<BookAuthor>()
+               .HasKey(bc => new { bc.BookId, bc.AuthorId });
 
+
+            builder.ApplyConfiguration(new BookConfigurationService());
+
+            builder.ApplyConfiguration(new AuthorConfigureService());
+
+            builder.ApplyConfiguration(new BookAuthorConfigurationService());
+
+            builder.Entity<CourseStudent>()
+               .HasKey(bc => new { bc.CourseId, bc.StudentId });
+
+            //SeedRoles(builder);
+            //SeedUsers(builder);
+            //SeedUserRoles(builder);
+           
         }
         private void SeedUsers(ModelBuilder builder)
         {
@@ -259,8 +275,11 @@ namespace WebApi.Data
                        }
             );
         }
-        public  DbSet<Book>?  Books { get; set; }
-        public DbSet<Student>? Students { get; set; }
+
+        public  DbSet<Book> Books { get; set; }
+        public  DbSet<Student> Students { get; set; }
+        public  DbSet<Author> Authors { get; set; }
+        public  DbSet<BookAuthor> BookAuthors { get; set; }
 
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System.Net;
 using WebApi.Entities;
+using WebApi.Entities.EntitieDtos;
 
 namespace WebApi.BaseServices
 {
-    public interface IBookService:IBaseService<Book>
+    public interface IBookService:IBaseService<BookDto>
     {
-        List<Book> GetBooks();
-        Task<Book> GetBookById(Guid id);
+        Task<List<BookDto>> GetBooks();
+        Task<BookDto> GetBookById(Guid id);
     }
 }

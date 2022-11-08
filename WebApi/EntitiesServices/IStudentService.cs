@@ -1,14 +1,13 @@
-﻿using WebApi.Entities;
+﻿using WebApi.BaseServices;
+using WebApi.Entities;
 
 namespace WebApi.EntitiesServices
 {
-    public interface IStudentService
+    public interface IStudentService:IBaseService<Student>
     {
         Task<List<Student>> GetStudents();
         Task<Student> GetStudentById(int id);
-        Task<string> Insert(Student student);
-        Task<string> Update(Student student);
-        Task<string> Delete(int id);
+        Task<string> Delete(int Id);
 
 
     }

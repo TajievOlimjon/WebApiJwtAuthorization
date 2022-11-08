@@ -20,8 +20,13 @@ namespace WebApi.EntitiesServices
             if (student==null) return $"Not found Id ={id}";
             _context.Students.Remove(student);
             var deletedEntry= await _context.SaveChangesAsync();
-            if (deletedEntry.Equals(null)) return  "Not Deleted";
-            return $"Deleted Student: {student.Id},{student.Name},{student.LastName},{student.Email} ,{student.PhoneNumber} ";
+            if (deletedEntry.Equals(null)) return $"Not Deleted: Id = {student.Id}";
+            return $"Deleted Student: Id = {student.Id}";
+        }
+
+        public Task<string> DeleteById(Guid Id)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<Student> GetStudentById(int id)

@@ -5,7 +5,7 @@ using System.Text;
 using WebApi.Data;
 using WebApi.Models;
 
-namespace WebApi.Extension_Methods
+namespace WebApi.ExtensionMethods
 {
     public static  class AddAccountService
     {
