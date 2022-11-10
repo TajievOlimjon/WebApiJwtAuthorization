@@ -1,13 +1,15 @@
 ﻿using WebApi.BaseServices;
 using WebApi.Entities;
+using WebApi.Entities.EntitieDtos;
 
 namespace WebApi.EntitiesServices
 {
-    public interface IStudentService:IBaseService<Student>
+    public interface IStudentService:IBaseService<StudentDto>
     {
-        Task<List<Student>> GetStudents();
-        Task<Student> GetStudentById(int id);
+        Task<List<StudentDto>> GetStudents();
+        Task<StudentDto> GetStudentById(int id);
         Task<string> Delete(int Id);
+        ValueTask<List<GetGroupStudentByCourse>> GetGroupStudentByCourses();
 
 
     }

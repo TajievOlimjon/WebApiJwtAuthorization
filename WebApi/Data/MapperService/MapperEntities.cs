@@ -10,6 +10,9 @@ namespace WebApi.Data.MapperService
         {
             CreateMap<BookDto,Book>().ReverseMap();
             CreateMap<AuthorDto,Author>().ReverseMap();
+            CreateMap<CourseDto,Course>().ReverseMap();
+            CreateMap<StudentDto,Student>().ReverseMap();
+            CreateMap<GetGroupStudentByCourse, Student>().ReverseMap();
 
         }
     }

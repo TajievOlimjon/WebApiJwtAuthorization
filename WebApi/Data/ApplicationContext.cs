@@ -23,8 +23,8 @@ namespace WebApi.Data
 
             builder.HasPostgresExtension("uuid-ossp");
 
-            builder.Entity<BookAuthor>()
-               .HasKey(bc => new { bc.BookId, bc.AuthorId });
+            //builder.Entity<BookAuthor>()
+            //   .HasKey(bc => new { bc.BookId, bc.AuthorId });
 
 
             builder.ApplyConfiguration(new BookConfigurationService());
@@ -33,8 +33,6 @@ namespace WebApi.Data
 
             builder.ApplyConfiguration(new BookAuthorConfigurationService());
 
-            builder.Entity<CourseStudent>()
-               .HasKey(bc => new { bc.CourseId, bc.StudentId });
 
             //SeedRoles(builder);
             //SeedUsers(builder);
@@ -280,6 +278,6 @@ namespace WebApi.Data
         public  DbSet<Student> Students { get; set; }
         public  DbSet<Author> Authors { get; set; }
         public  DbSet<BookAuthor> BookAuthors { get; set; }
-
+        public DbSet<Course> Courses { get; set; }
     }
 }

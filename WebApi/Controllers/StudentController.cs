@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using WebApi.Entities;
+using WebApi.Entities.EntitieDtos;
 using WebApi.EntitiesServices;
 
 namespace WebApi.Controllers
@@ -18,26 +19,32 @@ namespace WebApi.Controllers
         }
         // GET: StudentController
         [HttpGet("GetStudents")]
-        public async Task<List<Student>> GetStudents()
+        public async Task<ActionResult<List<StudentDto>>> GetStudents()
         {
             var student = await _studentService.GetStudents();
             return student;
         }
+        [HttpGet("GetGroupStudentByCourses")]
+        public async ValueTask<List<GetGroupStudentByCourse>> GetGroupStudentByCourses()
+        {
+            return await _studentService.GetGroupStudentByCourses();
+        }
+
 
         [HttpGet("GetStudentById")]
-        public async Task<Student> GetStudentById(int Id)
+        public async Task<StudentDto> GetStudentById(int Id)
         {
             var student = await _studentService.GetStudentById(Id);           
             return student;
         }
         [HttpPost("AddStudent")]
-        public async Task<string> AddStudent([FromBody]Student student)
+        public async Task<string> AddStudent([FromForm] StudentDto student)
         {
             return    await _studentService.Insert(student);
         }
 
         [HttpPut("EditStudent")]
-        public async Task<string> EditStudent([FromBody] Student student)
+        public async Task<string> EditStudent([FromForm] StudentDto student)
         {
             return  await _studentService.Update(student);
             //if (save != null) return "Saved";

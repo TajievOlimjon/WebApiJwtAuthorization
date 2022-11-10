@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Data;
 using WebApi.Entities;
+using WebApi.Entities.EntitieDtos;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace WebApi.EntitiesServices
@@ -8,9 +10,11 @@ namespace WebApi.EntitiesServices
     public class StudentService:IStudentService
     {
         private readonly ApplicationContext _context;
-        public StudentService(ApplicationContext applicationContext)
+        private readonly IMapper _mapper;
+        public StudentService(ApplicationContext applicationContext,IMapper mapper)
         {
             _context = applicationContext;
+            _mapper=mapper;
         }
 
        
@@ -29,30 +33,66 @@ namespace WebApi.EntitiesServices
             throw new NotImplementedException();
         }
 
-        public async Task<Student> GetStudentById(int id)
+        public async ValueTask<List<GetGroupStudentByCourse>> GetGroupStudentByCourses()
+        {
+            var query = await (from s in _context.Students
+                               join c in _context.Courses on s.CourseId equals c.Id
+                               group s by new
+                               {
+                                   CourseId = s.CourseId,
+                                   CousrName = c.Name,
+                                   Description = c.Description
+                               }
+                                into gKey
+                               select new GetGroupStudentByCourse
+                               {
+                                   Id = gKey.Key.CourseId,
+                                   CourseName = gKey.Key.CousrName,
+                                   Description=gKey.Key.Description,
+                                   Students = gKey.Select(x => new StudentDto
+                                   {
+                                       Id = x.Id,
+                                       Name = x.Name,
+                                       LastName = x.LastName,
+                                       Age = x.Age,
+                                       PhoneNumber = x.PhoneNumber,
+                                       Email = x.Email,
+                                       Gender = x.Gender,
+                                       CourseId = x.CourseId
+                                   }).ToList()
+                               }).ToListAsync();
+            return query;
+        }
+
+        public async Task<StudentDto> GetStudentById(int id)
         {
             var student = await _context.Students.FindAsync(id);
-            if (student == null) return null;
-            return student;
+            var mappedStudent = _mapper.Map<StudentDto>(student);
+            if (mappedStudent == null) return null;
+            return mappedStudent;
         }
 
-        public async Task<List<Student>> GetStudents()
+        public async Task<List<StudentDto>> GetStudents()
+        {   
+            var listOfStudents= await _context.Students.ToListAsync();
+            var mapped = _mapper.Map<List<StudentDto>>(listOfStudents);
+            return mapped;
+        }
+
+        public async Task<string> Insert(StudentDto student)
         {
-            return await _context.Students.ToListAsync();
-        }
-
-        public async Task<string> Insert(Student student)
-        {             
-            await _context.Students.AddAsync(student);
+            var mapped = _mapper.Map<Student>(student);
+            await _context.Students.AddAsync(mapped);
             var save = await _context.SaveChangesAsync();
             if (save.Equals(null)) return "Not Saved";
             return $"Saved Student:{student.Name}," +
                    $"{student.LastName},{student.Email},{student.PhoneNumber}";
         }
 
-        public async Task<string> Update(Student student)
+        public async Task<string> Update(StudentDto student)
         {
-             _context.Entry(student).State = EntityState.Modified;
+            var mapped = _mapper.Map<Student>(student);
+            _context.Entry(mapped).State = EntityState.Modified;
             var save = await _context.SaveChangesAsync();
             if (save.Equals(null)) return "Not Updated";
             return $"Updated Student:{student.Id}";

@@ -1,9 +1,8 @@
-﻿using WebApi.Data;
-using WebApi.Enums;
+﻿using WebApi.Enums;
 
-namespace WebApi.Entities
+namespace WebApi.Entities.EntitieDtos
 {
-    public class Student
+    public class StudentDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -12,9 +11,8 @@ namespace WebApi.Entities
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public Gender Gender { get; set; }
-        public DateTimeOffset CreateDate { get; set; }= DateTimeOffset.Now;
-        public DateTimeOffset UpdateDate { get; set; }=DateTimeOffset.Now;
         public int CourseId { get; set; }
-        public Course Course { get; set; }
+        public DateTimeOffset CreateDate { get; set; }
+        public DateTimeOffset UpdateDate { get; set; }
     }
 }
